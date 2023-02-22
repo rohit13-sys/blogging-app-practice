@@ -48,7 +48,7 @@ public class CategoryController {
 
         int id=categoryService.getCategoryIdByCategoryName(categoryDto.getCategoryTitle());
         categoryService.deleteCategory(id);
-        return new ResponseEntity<>("User : "+categoryDto.getCategoryTitle()+" is deleted successfully", HttpStatus.OK);
+        return new ResponseEntity<>("Category : "+categoryDto.getCategoryTitle()+" is deleted successfully", HttpStatus.OK);
 
     }
 

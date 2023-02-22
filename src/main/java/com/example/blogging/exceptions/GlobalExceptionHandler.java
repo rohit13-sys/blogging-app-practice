@@ -45,7 +45,13 @@ public class GlobalExceptionHandler {
     }
 
     @ExceptionHandler(CaregoryAlreadyExists.class)
-    public ResponseEntity<Object> saregoryAlreadyExists(CaregoryAlreadyExists ex){
+    public ResponseEntity<Object> caregoryAlreadyExists(CaregoryAlreadyExists ex){
+        String msg=ex.getMessage();
+        return new ResponseEntity<>(msg, HttpStatus.NOT_ACCEPTABLE);
+    }
+
+    @ExceptionHandler(PostNotFoundException.class)
+    public ResponseEntity<Object> postNotFoundException(PostNotFoundException ex){
         String msg=ex.getMessage();
         return new ResponseEntity<>(msg, HttpStatus.NOT_ACCEPTABLE);
     }
