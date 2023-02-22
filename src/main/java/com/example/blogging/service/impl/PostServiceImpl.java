@@ -16,6 +16,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.Date;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class PostServiceImpl implements PostService {
@@ -46,7 +47,7 @@ public class PostServiceImpl implements PostService {
     }
 
     @Override
-    public Post updatePost(PostDto postDto) {
+    public PostDto updatePost(PostDto postDto) {
         return null;
     }
 
@@ -56,27 +57,32 @@ public class PostServiceImpl implements PostService {
     }
 
     @Override
-    public List<Post> getAllPosts() {
+    public List<PostDto> getAllPosts() {
         return null;
     }
 
     @Override
-    public Post getPostById(int postId) {
+    public PostDto getPostById(int postId) {
         return null;
     }
 
     @Override
-    public List<Post> getPostByCategory(int categoryId) {
-        return null;
+    public List<PostDto> getPostByCategory(int categoryId) {
+        Category category=categoryRepository.findById(categoryId).orElseThrow(()->new CategoryNotFound("Category not found"));
+        List<Post> post=postRepository.findByCategory(category);
+        return post.stream().map((p)->mapper.map(p,PostDto.class)).collect(Collectors.toList());
+    }
+
+
+    @Override
+    public List<PostDto> getPostByUser(int userId) {
+        Users user=userReposiory.findById(userId).orElseThrow(()->new UserNotFound("User not found"));
+        List<Post> post=postRepository.findByUser(user);
+        return post.stream().map((p)->mapper.map(p,PostDto.class)).collect(Collectors.toList());
     }
 
     @Override
-    public List<Post> getPostByUser(int userId) {
-        return null;
-    }
-
-    @Override
-    public List<Post> searchPosts(String keyword) {
+    public List<PostDto> searchPosts(String keyword) {
         return null;
     }
 }
