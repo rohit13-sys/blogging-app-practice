@@ -7,6 +7,7 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
+import java.io.FileNotFoundException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -45,8 +46,28 @@ public class GlobalExceptionHandler {
     }
 
     @ExceptionHandler(CaregoryAlreadyExists.class)
-    public ResponseEntity<Object> saregoryAlreadyExists(CaregoryAlreadyExists ex){
+    public ResponseEntity<Object> categoryAlreadyExists(CaregoryAlreadyExists ex){
         String msg=ex.getMessage();
         return new ResponseEntity<>(msg, HttpStatus.NOT_ACCEPTABLE);
+    }
+
+
+    @ExceptionHandler(PostNotFoundException.class)
+    public ResponseEntity<Object> postNotFoundException(PostNotFoundException ex){
+        String msg=ex.getMessage();
+        return new ResponseEntity<>(msg, HttpStatus.NOT_ACCEPTABLE);
+    }
+
+    @ExceptionHandler(FileNotFoundException.class)
+    public ResponseEntity<Object> fileNotFoundException(){
+        FileNotFoundException ex=new FileNotFoundException("File Not Exists");
+        String msg=ex.getMessage();
+        return new ResponseEntity<>(msg, HttpStatus.NOT_FOUND);
+    }
+
+    @ExceptionHandler(CommentNotFoundException.class)
+    public ResponseEntity<Object> commentNotFoundException(CommentNotFoundException ex){
+        String msg=ex.getMessage();
+        return new ResponseEntity<>(msg, HttpStatus.NOT_FOUND);
     }
 }

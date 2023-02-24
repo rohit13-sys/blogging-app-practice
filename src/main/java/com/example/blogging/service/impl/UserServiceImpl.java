@@ -8,6 +8,7 @@ import com.example.blogging.repository.UserReposiory;
 import com.example.blogging.service.UserService;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -54,7 +55,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserDto getUserByUserName(String userName) {
-        Users user=userReposiory.findByEmail(userName);
+        Users user=userReposiory.findByEmail(userName).orElseThrow(()->new UsernameNotFoundException("User Not Found"));
         if(user!=null){
 
             return userToDto(user);
@@ -81,7 +82,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public int getUserIdByUserName(String userName) {
-        Users user=userReposiory.findByEmail(userName);
+        Users user=userReposiory.findByEmail(userName).orElseThrow(()->new UsernameNotFoundException("USer Not Found"));
         if (user != null) {
                 return user.getId();
         }else {
