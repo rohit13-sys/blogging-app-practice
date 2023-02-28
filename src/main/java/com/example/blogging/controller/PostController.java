@@ -4,6 +4,7 @@ import com.example.blogging.entity.Post;
 import com.example.blogging.exceptions.PostNotFoundException;
 import com.example.blogging.payloads.PostDto;
 import com.example.blogging.payloads.PostResponse;
+import com.example.blogging.service.AuthService;
 import com.example.blogging.service.FileService;
 import com.example.blogging.service.PostService;
 import com.example.blogging.utils.Constants;
@@ -14,12 +15,14 @@ import org.springframework.core.io.ClassPathResource;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.util.StreamUtils;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import java.io.*;
 import java.net.http.HttpResponse;
 import java.util.List;
@@ -29,8 +32,10 @@ import java.util.List;
 public class PostController {
 
     @Autowired
-    PostService postService;
+    private PostService postService;
 
+    @Autowired
+    private AuthService authService;
 
 
     @PostMapping("/user/{user-id}/category/{category-id}/posts")
@@ -61,11 +66,19 @@ public class PostController {
         return new ResponseEntity<>(postResponse, HttpStatus.OK);
     }
 
+
     @DeleteMapping("/delete-posts/{post-id}")
     public ResponseEntity<Object> deletePostById(@PathVariable("post-id") Integer id) {
+        String authrisedUserName = authService.getLoggedInUserName();
         PostDto postDto = postService.getPostById(id);
-        postService.deletePost(postDto);
-        return new ResponseEntity<>("Post : " + postDto.getTitle() + " is deleted successfully", HttpStatus.OK);
+        String authorisedUser=postDto.getUser().getEmail();
+        if(authorisedUser.equalsIgnoreCase(authrisedUserName)){
+            postService.deletePost(postDto);
+            return new ResponseEntity<>("Post : " + postDto.getTitle() + " is deleted successfully", HttpStatus.OK);
+        }else {
+            return new ResponseEntity<>("You are not authorised User",HttpStatus.NOT_ACCEPTABLE);
+        }
+
     }
 
     @PutMapping("/update-posts/{post-id}")

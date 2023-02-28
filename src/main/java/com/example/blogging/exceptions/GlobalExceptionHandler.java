@@ -16,7 +16,7 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(UserNotFound.class)
     public ResponseEntity<Object> userNotFoundException(UserNotFound ex){
-        String msg=ex.getMessage();
+        String msg="User Not Found!!";
         return new ResponseEntity<>(msg, HttpStatus.NOT_FOUND);
     }
 
@@ -69,5 +69,26 @@ public class GlobalExceptionHandler {
     public ResponseEntity<Object> commentNotFoundException(CommentNotFoundException ex){
         String msg=ex.getMessage();
         return new ResponseEntity<>(msg, HttpStatus.NOT_FOUND);
+    }
+
+    @ExceptionHandler(InvalidCredentialsException.class)
+    public ResponseEntity<Object> invalidCredentialsException(){
+        InvalidCredentialsException ex=new InvalidCredentialsException("Invalid Credentials");
+        String msg=ex.getMessage();
+        return new ResponseEntity<>(msg, HttpStatus.NOT_FOUND);
+    }
+
+    @ExceptionHandler(RoleNotFoundException.class)
+    public ResponseEntity<Object> roleNotFoundException(){
+        RoleNotFoundException ex=new RoleNotFoundException();
+        String msg="Role Not Found!!!";
+        return new ResponseEntity<>(msg, HttpStatus.NOT_FOUND);
+    }
+
+    @ExceptionHandler(RoleAlreadyExistsException.class)
+    public ResponseEntity<Object> roleAlreadyExistsException(){
+        RoleAlreadyExistsException ex=new RoleAlreadyExistsException();
+        String msg="Role Already Exists!!!";
+        return new ResponseEntity<>(msg, HttpStatus.NOT_ACCEPTABLE);
     }
 }
