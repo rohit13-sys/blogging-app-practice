@@ -39,10 +39,6 @@ public class BloggingApplication implements CommandLineRunner {
 		role1.setId(Constants.ADMIN_USER_ID);
 		role1.setName(Constants.ADMIN_USER);
 
-		Role role2=new Role();
-		role2.setId(Constants.ACCOUNT_USER_ID);
-		role2.setName(Constants.ACCOUNT_USER);
-
-		roleRepository.saveAll(List.of(role,role1,role2));
+		roleRepository.saveAll(List.of(role,role1));
 	}
 }
