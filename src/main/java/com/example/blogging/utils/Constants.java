@@ -16,4 +16,5 @@ public class Constants {
     public static  final String NORMAL_USER="ROLE_NORMAL";
 
     public static  final String ADMIN_USER="ROLE_ADMIN";
+
 }

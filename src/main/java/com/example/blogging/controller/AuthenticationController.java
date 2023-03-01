@@ -9,13 +9,11 @@ import com.example.blogging.service.AuthService;
 import com.example.blogging.service.UserService;
 import org.apache.catalina.session.StandardSession;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
@@ -30,6 +28,9 @@ public class AuthenticationController {
 
     @Autowired
     private JWTUtil jwtUtil;
+
+    @Value("${my.greeting}")
+    private String greeting;
 
     @PostMapping("/authenticate")
     public ResponseEntity<JwtAuthResponse> generateToken(@RequestBody JwtAuthRequest request,HttpSession session) throws Exception {
@@ -55,6 +56,12 @@ public class AuthenticationController {
         return new ResponseEntity<>(userDto, HttpStatus.CREATED);
 
 
+    }
+
+
+    @GetMapping("/hello")
+    public String hello(){
+        return greeting;
     }
 
 }

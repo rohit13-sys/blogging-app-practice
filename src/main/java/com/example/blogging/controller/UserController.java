@@ -54,20 +54,12 @@ public class UserController {
     }
 
 
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     @DeleteMapping("/delete-user/{id}")
     public ResponseEntity<Object> deleteUserByEmail(@PathVariable("id") Integer id) {
 
-        String authrisedUserName = authService.getLoggedInUserName();
-        UserDto userDto = service.getUserByUserName(authrisedUserName);
-        List<RoleDto> userRoles = userDto.getRoles();
-        for (int i = 0; i < userRoles.size(); i++) {
-            if (userRoles.get(i).getName().contains("ADMIN")) {
-                service.deleteUserByUserName(id);
-                return new ResponseEntity<>("User with id : " + id + " is deleted successfully", HttpStatus.OK);
-            }
-        }
-        return new ResponseEntity<>("You are not authorised to do this operation", HttpStatus.FORBIDDEN);
-
+        service.deleteUserByUserName(id);
+        return new ResponseEntity<>("User with id : " + id + " is deleted successfully", HttpStatus.OK);
 
     }
 
@@ -76,6 +68,5 @@ public class UserController {
         List<UserDto> userDtoList = service.getAllUsers();
         return new ResponseEntity<>(userDtoList, HttpStatus.OK);
     }
-
 
 }
